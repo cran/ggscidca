@@ -1,0 +1,17 @@
+221b53abb5d034e6fd537d2689e54e3d *DESCRIPTION
+a8b8e2723ef3253150c4df50986dda8b *NAMESPACE
+d77e1d853cb533696b2f0bf6f27a671f *R/Breastcancer.R
+216e0a9c482690414e928153b1cfce54 *R/dca.R
+a6c9cf97cda68af4000281cc67a5180e *R/getplot.R
+b4bc7e01e83adba9219cf276516712ff *R/modeldata.R
+884b301cca7ed8d3ced155cc2cab9a63 *R/scidca.R
+5cde051ecb174a5bf141c024f04cec04 *R/scidca.coxph.R
+ea509eeabb790469e9b08ad6fbaa1f4f *R/scidca.glm.R
+3a958c01db3ecaf4179a316c60ee0034 *R/stdca.R
+c4af709827f34a6df89eed06c075abf6 *data/Breastcancer.rda
+0b2b5d5b3ab9826c04de07e7c6ea316d *man/Breastcancer.Rd
+e48b987fad6882a9d1869de7b0c5c435 *man/dca.Rd
+e39b1d344023293836075250b22368b6 *man/scidca.Rd
+cfd8698617c942cbefbd3ed97af75e1f *man/scidca.coxph.Rd
+2212492d499a79318ebb1c876f00ea0e *man/scidca.glm.Rd
+727365562c13586856edffa3c24309ed *man/stdca.Rd
