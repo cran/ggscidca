@@ -18,6 +18,18 @@
 #'@param text.col The colour of the font.
 #'@param colbar The default is true, and if false is selected, bar plotting is cancelled.
 #'@param merge If true is selected it will merge the two long zones.
+#'@param threshold.text The default is FALSE, if TRUE is selected, a text message for the threshold will be added.
+#'@param threshold.line The default is FALSE, and if TRUE is selected, lines for the threshold will be added.
+#'@param nudge_x Used to adjust the x-axis position of the point where the threshold is located.
+#'@param nudge_y Used to adjust the y-axis position of the point where the threshold is located.
+#'@param threshold.linetype The line shape of the threshold line.
+#'@param threshold.linewidth The line width of the threshold line.
+#'@param threshold.linecol The colour of the threshold line.
+#'@param po.text.size The size of the threshold point text.
+#'@param po.text.col The colour of the threshold point text.
+#'@param po.text.fill The background of the threshold point text.
+#'@param liftpec Threshold point left displacement.
+#'@param rightpec Threshold point right displacement.
 #'@importFrom "stats" "median"
 #'
 #'
@@ -32,7 +44,10 @@
 
 scidca.coxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
                        pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nomogram relevant",
-                       irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE) {
+                       irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE,
+                       threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
+                       threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
+                       po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL) {
   if (missing(fit)) stop("fit is missing .")
   fit<-fit;
   if (is.null(modelnames)) {modelnames<-"model"
@@ -56,14 +71,17 @@ scidca.coxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnam
   }
   if (!is.null(newdata)) {
     net<-stdca(data=newdata, outcome=modely[2], ttoutcome=modely[1], timepoint=timepo1, predictors="prob1", probability=FALSE,
-               graph=F)
+               graph=FALSE)
   } else {
     net<-stdca(data=data, outcome=modely[2], ttoutcome=modely[1], timepoint=timepo1, predictors="prob1", probability=FALSE,
-               graph=F)
+               graph=FALSE)
   }
   ########
   p<-getplot(net,pyh=pyh,relcol=relcol,irrelcol=irrelcol,relabel=relabel,modelnames=modelnames,merge=merge,y.min=y.min,xstop=xstop,y.max=y.max,
-             irrellabel=irrellabel,text.size=text.size,text.col=text.col,colbar=colbar)
+             irrellabel=irrellabel,text.size=text.size,text.col=text.col,colbar=colbar,
+             threshold.text=threshold.text,threshold.line=threshold.line,nudge_x = nudge_x,nudge_y = nudge_y,
+             threshold.linetype=threshold.linetype,threshold.linewidth = threshold.linewidth,threshold.linecol=threshold.linecol,
+             po.text.size=po.text.size,po.text.col=po.text.col,po.text.fill=po.text.fill,liftpec=liftpec,rightpec=rightpec)
   p
 }
 

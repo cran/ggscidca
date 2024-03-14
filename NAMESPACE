@@ -2,11 +2,13 @@
 
 S3method(scidca,coxph)
 S3method(scidca,glm)
+S3method(scidca,randomForest)
 export(dca)
 export(scidca)
 export(stdca)
 import("ggplot2")
 import("reshape2")
 import("survival")
+importFrom("randomForest","randomForest")
 importFrom("stats","median")
 importFrom("stats","predict")

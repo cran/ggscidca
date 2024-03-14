@@ -21,7 +21,19 @@
   irrellabel = "Nomogram irrelevant",
   text.size = 4.5,
   text.col = "green",
-  colbar = TRUE
+  colbar = TRUE,
+  threshold.text = FALSE,
+  threshold.line = FALSE,
+  nudge_x = 0,
+  nudge_y = 0,
+  threshold.linetype = 2,
+  threshold.linewidth = 1.2,
+  threshold.linecol = "black",
+  po.text.size = 4,
+  po.text.col = "black",
+  po.text.fill = "white",
+  liftpec = NULL,
+  rightpec = NULL
 )
 }
 \arguments{
@@ -58,6 +70,30 @@
 \item{text.col}{The colour of the font.}
 
 \item{colbar}{The default is true, and if false is selected, bar plotting is cancelled.}
+
+\item{threshold.text}{The default is FALSE, if TRUE is selected, a text message for the threshold will be added.}
+
+\item{threshold.line}{The default is FALSE, and if TRUE is selected, lines for the threshold will be added.}
+
+\item{nudge_x}{Used to adjust the x-axis position of the point where the threshold is located.}
+
+\item{nudge_y}{Used to adjust the y-axis position of the point where the threshold is located.}
+
+\item{threshold.linetype}{The line shape of the threshold line.}
+
+\item{threshold.linewidth}{The line width of the threshold line.}
+
+\item{threshold.linecol}{The colour of the threshold line.}
+
+\item{po.text.size}{The size of the threshold point text.}
+
+\item{po.text.col}{The colour of the threshold point text.}
+
+\item{po.text.fill}{The background of the threshold point text.}
+
+\item{liftpec}{Threshold point left displacement.}
+
+\item{rightpec}{Threshold point right displacement.}
 }
 \value{
 A picture.

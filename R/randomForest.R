@@ -1,8 +1,8 @@
-#'@title  scidca.glm
-#'@name  scidca.glm
+#'@title  scidca.randomForest
+#'@name  scidca.randomForest
 #'
 #'@param fit Fill in the model you want to analyze. Support survival analysis and logistic regression.
-#'@param newdata If the decision curve of the validation set is to be analysed. Fill in the validation set data here.
+#'@param newdata This parameter is indispensable in the random forest decision curve. Fill in your data.
 #'@param timepoint If it is a survival analysis, fill in the point in time you need to study. The default is the median time.
 #'@param cmprsk If it is a competitive risk model, select TRUE here.
 #'@param modelnames Defines the name of the generated image model.
@@ -30,8 +30,7 @@
 #'@param po.text.fill The background of the threshold point text.
 #'@param liftpec Threshold point left displacement.
 #'@param rightpec Threshold point right displacement.
-#'@importFrom "stats" "predict"
-#'
+#'@importFrom "randomForest" "randomForest"
 #'
 #'
 #'@export
@@ -40,16 +39,12 @@
 #'
 
 
-
-
-
-
-scidca.glm<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
-                     pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nomogram relevant",
-                     irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE,
-                     threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
-                     threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
-                     po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL) {
+scidca.randomForest<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
+                              pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nomogram relevant",
+                              irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE,
+                              threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
+                              threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
+                              po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL) {
   if (missing(fit)) stop("fit is missing .")
   fit<-fit;
   if (is.null(modelnames)) {modelnames<-"model"
@@ -59,22 +54,15 @@ scidca.glm<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames
   all.var<-all.vars(fit$terms)
   modely<-model.y(fit)
   modelx<-model.x(fit)
-  data<-fit[["data"]]
-  if (!is.null(newdata)) {
-    newdata<-newdata
-  }
-  if (!is.null(newdata)) {
-    newdata$prob1 <- stats::predict(fit,newdata=newdata,type="response")
-  } else {
-    data$prob1<-stats::predict(fit,newdata=data,type="response")
-  }
-  if (!is.null(newdata)) {
-    net<-dca(data = newdata, outcome = modely[1], predictors = c("prob1"),xstart = 0,
-             xstop = 1,graph=FALSE)
-  } else {
-    net<-dca(data = data, outcome = modely[1], predictors = c("prob1"),xstart = 0,
-             xstop = 1,graph=FALSE)
-  }
+  if (is.null(newdata)) {stop("The newdata parameter cannot be a null value in a random forest model.")}
+  newdata<-newdata
+  def_pred<-stats::predict(fit, newdata=newdata,type = "prob")##生成概率
+  def_pred<-as.data.frame(def_pred)
+  newdata$prob1<-def_pred[,2]
+  if (is.character(newdata[,modely])) {newdata[,modely]<-factor(newdata[,modely])}
+  if (is.factor(newdata[,modely])) {newdata[,modely]<-as.numeric(newdata[,modely])-1 }
+  net<-dca(data = newdata, outcome = modely[1], predictors = c("prob1"),xstart = 0,
+           xstop = 1,graph=FALSE)
   ########
   p<-getplot(net,pyh,relcol=relcol,irrelcol=irrelcol,relabel=relabel,merge=merge,modelnames=modelnames,y.min=y.min,xstop=xstop,y.max=y.max,
              irrellabel=irrellabel,text.size=text.size,text.col=text.col,colbar=colbar,threshold.text=threshold.text,threshold.line=threshold.line,nudge_x = nudge_x,nudge_y = nudge_y,

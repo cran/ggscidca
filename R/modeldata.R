@@ -3,7 +3,7 @@ utils::globalVariables(c('as.formula',
 ))
 
 
-modeldata<-function(fit){
+modeldata<-function(fit,newdata=NULL){
   if ('coxph' %in% class(fit)){
     formu1=paste0('~',paste0(model.x(fit),collapse = '+'))
     formu=as.formula(paste0('Surv(',paste0(model.y(fit),collapse = ','),')',formu1))
@@ -27,6 +27,9 @@ model.y<-function(fit){
   if ('glm' %in% class(fit)){
     modely<-all.vars(fit$terms)[c(1)]
   }
+  if ('randomForest' %in% class(fit)){
+    modely<-all.vars(fit$terms)[c(1)]
+  }
   modely
 }
 model.x<-function(fit){
@@ -34,6 +37,9 @@ model.x<-function(fit){
     modelx<-all.vars(fit$terms)[-c(1,2)]
   }
   if ('glm' %in% class(fit)){
+    modelx<-all.vars(fit$terms)[-c(1)]
+  }
+  if ('randomForest' %in% class(fit)){
     modelx<-all.vars(fit$terms)[-c(1)]
   }
   modelx
