@@ -82,7 +82,19 @@
 #'scidca(fit,newdata = testdata )
 #'scidca(fit,newdata = testdata ,threshold.line = TRUE,threshold.text = TRUE)
 #'
-#'
+#'#Competitive risk modelling
+#'library("cmprsk")
+#'#Import data
+#'df_surv<-df_surv
+#'#Convert the ending variable to the form 0,1,2.
+#'df_surv$cancer_cr<-ifelse(df_surv$cancer_cr=="diagnosed with cancer",1,
+#'ifelse(df_surv$cancer_cr=="dead other causes",2,0))
+#'#Establishment of a survival analysis model
+#'cox_model <- coxph(Surv(ttcancer, cancer_cr==1) ~ age + famhistory + marker, data = df_surv)
+#'#Conversion to competitive risk modelling format
+#'cox_model1<-newcrr(cox_model)
+#'#Plotting decision curves
+#'scidca(cox_model1,timepoint=1.5,newdata = df_surv)
 
 
 
