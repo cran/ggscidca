@@ -29,25 +29,26 @@ getplot<-function(data,pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nom
                   irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",modelnames=NULL,
                   colbar=TRUE,merge=FALSE,threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
                   threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
-                  po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL) {
+                  po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
+                  legend.position = c(0.85,0.75)) {
   dt<-data
   nbdat<-dt$net.benefit
   names(nbdat)<-c("threshold","all","none","net.benefit")
   nbdat$id<-c(1:nrow(nbdat))
   ####
   l1<-nbdat$net.benefit-nbdat$all>0
-  which(l1 == TRUE)
+  which(l1 == T)
   if (!is.null(liftpec)) {l11<-which(l1 == TRUE)[1]+liftpec
   } else {
     l11<-which(l1 == TRUE)[1]
   }
-  if (any(nbdat$net.benefit<0,na.rm = TRUE)==TRUE) {
+  if (any(nbdat$net.benefit<0,na.rm = T)==TRUE) {
     l2<-nbdat$net.benefit<0
     l21<-which(l2 == TRUE)[1]-1
-  } else if (any(nbdat$net.benefit==0,na.rm = TRUE)==TRUE) {
+  } else if (any(nbdat$net.benefit==0,na.rm = T)==TRUE) {
     l21<-which(nbdat$net.benefit==0)[1]
     l22<-length(nbdat$net.benefit)
-  } else if (!any(nbdat$net.benefit<=0,na.rm = TRUE)==TRUE) {
+  } else if (!any(nbdat$net.benefit<=0,na.rm = T)==TRUE) {
     l21<-length(nbdat$net.benefit[complete.cases(nbdat$net.benefit)])
     l22<-length(nbdat$net.benefit)
   }
@@ -65,12 +66,12 @@ getplot<-function(data,pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nom
   text.t2<-paste0(text.t2,"%")
   ##
   plotdat <- melt(nbdat,id="threshold",measure=c("net.benefit","all","none"))
-  x.max<-max(nbdat$threshold,na.rm = TRUE)
+  x.max<-max(nbdat$threshold,na.rm = T)
   if (!is.null(xstop)) {
     x.max<-xstop
   }
   if (is.null(y.max)) {
-    y.max<-max(plotdat$value,na.rm = TRUE)
+    y.max<-max(plotdat$value,na.rm = T)
   } else {y.max<-y.max}
   if (is.null(y.min)) {
     y.min<-y.max*0.4
@@ -97,7 +98,7 @@ getplot<-function(data,pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nom
     theme(panel.grid.major=element_blank(),
           panel.grid.minor=element_blank(),
           legend.title=element_blank(),
-          legend.position = c(0.85,0.75)
+          legend.position = legend.position
     )
   ###############
   rect_df1 <- data.frame(xmin = 0,
@@ -174,10 +175,8 @@ getplot<-function(data,pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nom
       p3<-p3+geom_label(data=point_df,
                         aes(x=x,y=y,label=label),nudge_x = nudge_x, nudge_y = nudge_y,size=po.text.size,
                         fill = po.text.fill,col=po.text.col)
+      p<-p3
     }
-    p<-p3
   }
   p
 }
-
-

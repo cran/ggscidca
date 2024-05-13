@@ -33,7 +33,8 @@
   po.text.col = "black",
   po.text.fill = "white",
   liftpec = NULL,
-  rightpec = NULL
+  rightpec = NULL,
+  legend.position = c(0.85, 0.75)
 )
 }
 \arguments{
@@ -94,6 +95,8 @@
 \item{liftpec}{Threshold point left displacement.}
 
 \item{rightpec}{Threshold point right displacement.}
+
+\item{legend.position}{Set the position of the legend.}
 }
 \value{
 A picture.

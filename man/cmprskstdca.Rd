@@ -37,6 +37,8 @@
 \item{smooth}{specifies whether or not to smooth net benefit curve. The default is FALSE.}
 
 \item{ttoutcome}{Enter the time variable in your data.}
+
+\item{legend.position}{Set the position of the legend.}
 }
 \value{
 Returns a data for plotting a decision curve.

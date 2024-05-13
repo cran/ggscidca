@@ -30,6 +30,7 @@
 #'@param po.text.fill The background of the threshold point text.
 #'@param liftpec Threshold point left displacement.
 #'@param rightpec Threshold point right displacement.
+#'@param legend.position Set the position of the legend.
 #'@importFrom "stats" "predict"
 #'
 #'
@@ -49,7 +50,8 @@ scidca.glm<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames
                      irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE,
                      threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
                      threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
-                     po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL) {
+                     po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
+                     legend.position = c(0.85,0.75)) {
   if (missing(fit)) stop("fit is missing .")
   fit<-fit;
   if (is.null(modelnames)) {modelnames<-"model"
@@ -70,15 +72,16 @@ scidca.glm<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames
   }
   if (!is.null(newdata)) {
     net<-dca(data = newdata, outcome = modely[1], predictors = c("prob1"),xstart = 0,
-             xstop = 1,graph=FALSE)
+             xstop = 1,graph=F)
   } else {
     net<-dca(data = data, outcome = modely[1], predictors = c("prob1"),xstart = 0,
-             xstop = 1,graph=FALSE)
+             xstop = 1,graph=F)
   }
   ########
   p<-getplot(net,pyh,relcol=relcol,irrelcol=irrelcol,relabel=relabel,merge=merge,modelnames=modelnames,y.min=y.min,xstop=xstop,y.max=y.max,
              irrellabel=irrellabel,text.size=text.size,text.col=text.col,colbar=colbar,threshold.text=threshold.text,threshold.line=threshold.line,nudge_x = nudge_x,nudge_y = nudge_y,
              threshold.linetype=threshold.linetype,threshold.linewidth = threshold.linewidth,threshold.linecol=threshold.linecol,
-             po.text.size=po.text.size,po.text.col=po.text.col,po.text.fill=po.text.fill,liftpec=liftpec,rightpec=rightpec)
+             po.text.size=po.text.size,po.text.col=po.text.col,po.text.fill=po.text.fill,liftpec=liftpec,rightpec=rightpec,
+             legend.position)
   p
 }

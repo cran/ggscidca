@@ -1,8 +1,8 @@
-#'@title  scidca.coxph
-#'@name  scidca.coxph
+#'@title  scidca.ksvm
+#'@name  scidca.ksvm
 #'
 #'@param fit Fill in the model you want to analyze. Support survival analysis and logistic regression.
-#'@param newdata If the decision curve of the validation set is to be analysed. Fill in the validation set data here.
+#'@param newdata This parameter is indispensable in the random forest decision curve. Fill in your data.
 #'@param timepoint If it is a survival analysis, fill in the point in time you need to study. The default is the median time.
 #'@param cmprsk If it is a competitive risk model, select TRUE here.
 #'@param modelnames Defines the name of the generated image model.
@@ -31,7 +31,7 @@
 #'@param liftpec Threshold point left displacement.
 #'@param rightpec Threshold point right displacement.
 #'@param legend.position Set the position of the legend.
-#'@importFrom "stats" "median"
+#'@importFrom "kernlab" "ksvm"
 #'
 #'
 #'@export
@@ -40,50 +40,36 @@
 #'
 
 
-
-
-
-scidca.coxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
-                       pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nomogram relevant",
-                       irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE,
-                       threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
-                       threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
-                       po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
-                       legend.position = c(0.85,0.75)) {
+scidca.ksvm<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
+                      pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nomogram relevant",
+                      irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE,
+                      threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
+                      threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
+                      po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
+                      legend.position = c(0.85,0.75)) {
   if (missing(fit)) stop("fit is missing .")
   fit<-fit;
   if (is.null(modelnames)) {modelnames<-"model"
   } else {
     modelnames<-modelnames
   }
-  all.var<-all.vars(fit$terms)
+  all.var<-all.vars(fit@terms)
   modely<-model.y(fit)
   modelx<-model.x(fit)
-  data<-modeldata(fit)
-  if (timepoint=='median') {
-    timepo1<-stats::median(data[,modely[1]])
-  } else {timepo1<-timepoint}
-  if (!is.null(newdata)) {
-    newdata<-newdata
-  }
-  if (!is.null(newdata)) {
-    newdata$prob1 <- c(1-(summary(survfit(fit, newdata=newdata), times=timepo1)$surv))
-  } else {
-    data$prob1 = c(1- (summary(survfit(fit, newdata=data), times=timepo1)$surv))
-  }
-  if (!is.null(newdata)) {
-    net<-stdca(data=newdata, outcome=modely[2], ttoutcome=modely[1], timepoint=timepo1, predictors="prob1", probability=FALSE,
-               graph=F)
-  } else {
-    net<-stdca(data=data, outcome=modely[2], ttoutcome=modely[1], timepoint=timepo1, predictors="prob1", probability=FALSE,
-               graph=F)
-  }
+  if (is.null(newdata)) {stop("In the support vector machine model, the newdata parameter cannot be a null value.")}
+  newdata<-newdata
+  def_pred<-kernlab::predict(fit, newdata=newdata,type = "probabilities")
+  def_pred<-as.data.frame(def_pred)
+  newdata$prob1<-def_pred[,2]
+  if (is.character(newdata[,modely])) {newdata[,modely]<-factor(newdata[,modely])}
+  if (is.factor(newdata[,modely])) {newdata[,modely]<-as.numeric(newdata[,modely])-1 }
+  net<-dca(data = newdata, outcome = modely[1], predictors = c("prob1"),xstart = 0,
+           xstop = 1,graph=F)
   ########
-  p<-getplot(net,pyh=pyh,relcol=relcol,irrelcol=irrelcol,relabel=relabel,modelnames=modelnames,merge=merge,y.min=y.min,xstop=xstop,y.max=y.max,
-             irrellabel=irrellabel,text.size=text.size,text.col=text.col,colbar=colbar,
-             threshold.text=threshold.text,threshold.line=threshold.line,nudge_x = nudge_x,nudge_y = nudge_y,
+  p<-getplot(net,pyh,relcol=relcol,irrelcol=irrelcol,relabel=relabel,merge=merge,modelnames=modelnames,y.min=y.min,xstop=xstop,y.max=y.max,
+             irrellabel=irrellabel,text.size=text.size,text.col=text.col,colbar=colbar,threshold.text=threshold.text,threshold.line=threshold.line,nudge_x = nudge_x,nudge_y = nudge_y,
              threshold.linetype=threshold.linetype,threshold.linewidth = threshold.linewidth,threshold.linecol=threshold.linecol,
              po.text.size=po.text.size,po.text.col=po.text.col,po.text.fill=po.text.fill,liftpec=liftpec,rightpec=rightpec,
-             legend.position)
+             legend.position=legend.position)
   p
 }

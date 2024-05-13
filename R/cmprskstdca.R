@@ -19,6 +19,7 @@
 #'@param cmprsk if evaluating outcome in presence of a competing risk. The default is FALSE
 #'@param smooth specifies whether or not to smooth net benefit curve. The default is FALSE.
 #'@param ttoutcome Enter the time variable in your data.
+#'@param legend.position Set the position of the legend.
 #'@export
 #'
 #'@return Returns a data for plotting a decision curve.

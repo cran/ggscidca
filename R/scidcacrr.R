@@ -30,6 +30,7 @@
 #'@param po.text.fill The background of the threshold point text.
 #'@param liftpec Threshold point left displacement.
 #'@param rightpec Threshold point right displacement.
+#'@param legend.position Set the position of the legend.
 #'@importFrom "stats" "median"
 #'@importFrom "cmprsk" "cuminc"
 #'
@@ -48,7 +49,8 @@ scidca.crr<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames
                      irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE,
                      threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
                      threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
-                     po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL) {
+                     po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
+                     legend.position = c(0.85,0.75)) {
   fit1<-fit[["mod"]];cencode<-fit[[2]];failcode<-fit[[3]]
   if (missing(fit1)) stop("fit is missing .")
   if (is.null(modelnames)) {modelnames<-"model"
@@ -82,7 +84,8 @@ scidca.crr<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames
              irrellabel=irrellabel,text.size=text.size,text.col=text.col,colbar=colbar,
              threshold.text=threshold.text,threshold.line=threshold.line,nudge_x = nudge_x,nudge_y = nudge_y,
              threshold.linetype=threshold.linetype,threshold.linewidth = threshold.linewidth,threshold.linecol=threshold.linecol,
-             po.text.size=po.text.size,po.text.col=po.text.col,po.text.fill=po.text.fill,liftpec=liftpec,rightpec=rightpec)
+             po.text.size=po.text.size,po.text.col=po.text.col,po.text.fill=po.text.fill,liftpec=liftpec,rightpec=rightpec,
+             legend.position=legend.position)
   p
 }
 

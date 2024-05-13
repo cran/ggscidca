@@ -42,6 +42,9 @@ model.y<-function(fit){
   if ('randomForest' %in% class(fit)){
     modely<-all.vars(fit$terms)[c(1)]
   }
+  if ('ksvm' %in% class(fit)){
+    modely<-all.vars(fit@terms)[c(1)]
+  }
   modely
 }
 model.x<-function(fit){
@@ -53,6 +56,9 @@ model.x<-function(fit){
   }
   if ('randomForest' %in% class(fit)){
     modelx<-all.vars(fit$terms)[-c(1)]
+  }
+  if ('ksvm' %in% class(fit)){
+    modelx<-all.vars(fit@terms)[-c(1)]
   }
   modelx
 }
