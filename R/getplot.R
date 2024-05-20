@@ -175,8 +175,8 @@ getplot<-function(data,pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nom
       p3<-p3+geom_label(data=point_df,
                         aes(x=x,y=y,label=label),nudge_x = nudge_x, nudge_y = nudge_y,size=po.text.size,
                         fill = po.text.fill,col=po.text.col)
-      p<-p3
     }
+    p<-p3
   }
   p
 }

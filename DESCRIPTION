@@ -1,7 +1,7 @@
 Package: ggscidca
 Type: Package
 Title: Plotting Decision Curve Analysis with Coloured Bars
-Version: 0.2.1
+Version: 0.2.3
 Authors@R: person("Qiang", "Liu", email = "dege857@163.com",
                   role = c("aut", "cre"))
 Maintainer: Qiang Liu <dege857@163.com>
@@ -9,11 +9,12 @@ Description: Decision curve analysis is a method for evaluating and comparing pr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: cmprsk, ggplot2, kernlab, randomForest, reshape2, survival
+Imports: cmprsk, e1071, ggplot2, kernlab, randomForest, reshape2,
+        survival
 Depends: R (>= 2.10)
 RoxygenNote: 7.2.1
 NeedsCompilation: no
-Packaged: 2024-05-13 08:38:12 UTC; liu
+Packaged: 2024-05-20 00:30:53 UTC; liu
 Author: Qiang Liu [aut, cre]
 Repository: CRAN
-Date/Publication: 2024-05-13 09:43:13 UTC
+Date/Publication: 2024-05-20 02:20:08 UTC
