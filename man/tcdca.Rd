@@ -3,6 +3,41 @@
 \name{tcdca}
 \alias{tcdca}
 \title{tcdca}
+\usage{
+tcdca(
+  ...,
+  newdata = NULL,
+  cmprsk = FALSE,
+  modelnames = NULL,
+  merge = FALSE,
+  y.min = NULL,
+  xstop = NULL,
+  y.max = NULL,
+  pyh = NULL,
+  relcol = "#c01e35",
+  irrelcol = "#0151a2",
+  relabel = "Nomogram relevant",
+  irrellabel = "Nomogram irrelevant",
+  text.size = 4.5,
+  text.col = "green",
+  colbar = TRUE,
+  threshold.text = FALSE,
+  threshold.line = FALSE,
+  nudge_x = 0,
+  nudge_y = 0,
+  threshold.linetype = 2,
+  threshold.linewidth = 1.2,
+  threshold.linecol = "black",
+  po.text.size = 4,
+  po.text.col = "black",
+  po.text.fill = "white",
+  liftpec = NULL,
+  rightpec = NULL,
+  legend.position = c(0.85, 0.75),
+  Splitface = NULL,
+  lincol = NULL
+)
+}
 \arguments{
 \item{...}{Fill in multiple binary classification models. Cannot populate correlation models with time.}
 
@@ -11,6 +46,8 @@
 \item{cmprsk}{If it is a competitive risk model, select TRUE here.}
 
 \item{modelnames}{Defines the name of the generated image model.}
+
+\item{merge}{If true is selected it will merge the two long zones.}
 
 \item{y.min}{The maximum value of the negative part of the picture. Generally defaults to positive values multiplied by 0.4.}
 
@@ -33,8 +70,6 @@
 \item{text.col}{The colour of the font.}
 
 \item{colbar}{The default is true, and if false is selected, bar plotting is cancelled.}
-
-\item{merge}{If true is selected it will merge the two long zones.}
 
 \item{threshold.text}{The default is FALSE, if TRUE is selected, a text message for the threshold will be added.}
 
@@ -63,6 +98,8 @@
 \item{legend.position}{Set the position of the legend.}
 
 \item{Splitface}{Name the faceted image.}
+
+\item{lincol}{Defines the drawing line color.}
 }
 \value{
 A picture.

@@ -31,6 +31,7 @@
 #'@param liftpec Threshold point left displacement.
 #'@param rightpec Threshold point right displacement.
 #'@param legend.position Set the position of the legend.
+#'@param lincol Defines the drawing line color.
 #'@importFrom "stats" "median"
 #'
 #'
@@ -49,7 +50,7 @@ scidca.coxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnam
                        threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
                        threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
                        po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
-                       legend.position = c(0.85,0.75)) {
+                       legend.position = c(0.85,0.75),lincol=c("#377EB8", "#4DAF4A", "#FF7F00")) {
   if (missing(fit)) stop("fit is missing .")
   fit<-fit;
   if (is.null(modelnames)) {modelnames<-"model"
@@ -72,9 +73,15 @@ scidca.coxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnam
     data$prob1 = c(1- (summary(survfit(fit, newdata=data), times=timepo1)$surv))
   }
   if (!is.null(newdata)) {
+    if (is.factor(newdata[,modely[2]])) {
+      newdata[,modely[2]]<-as.numeric(as.character(newdata[,modely[2]]))
+    }
     net<-stdca(data=newdata, outcome=modely[2], ttoutcome=modely[1], timepoint=timepo1, predictors="prob1", probability=FALSE,
                graph=F)
   } else {
+    if (is.factor(data[,modely[2]])) {
+      data[,modely[2]]<-as.numeric(as.character(data[,modely[2]]))
+    }
     net<-stdca(data=data, outcome=modely[2], ttoutcome=modely[1], timepoint=timepo1, predictors="prob1", probability=FALSE,
                graph=F)
   }
@@ -84,6 +91,6 @@ scidca.coxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnam
              threshold.text=threshold.text,threshold.line=threshold.line,nudge_x = nudge_x,nudge_y = nudge_y,
              threshold.linetype=threshold.linetype,threshold.linewidth = threshold.linewidth,threshold.linecol=threshold.linecol,
              po.text.size=po.text.size,po.text.col=po.text.col,po.text.fill=po.text.fill,liftpec=liftpec,rightpec=rightpec,
-             legend.position)
+             legend.position,lincol=lincol)
   p
 }

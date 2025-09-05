@@ -31,6 +31,7 @@
 #'@param liftpec Threshold point left displacement.
 #'@param rightpec Threshold point right displacement.
 #'@param legend.position Set the position of the legend.
+#'@param lincol Defines the drawing line color.
 #'@importFrom "stats" "median"
 #'@importFrom "cmprsk" "cuminc"
 #'
@@ -50,7 +51,7 @@ scidca.crr<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames
                      threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
                      threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
                      po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
-                     legend.position = c(0.85,0.75)) {
+                     legend.position = c(0.85,0.75),lincol=c("#377EB8", "#4DAF4A", "#FF7F00")) {
   fit1<-fit[["mod"]];cencode<-fit[[2]];failcode<-fit[[3]]
   if (missing(fit1)) stop("fit is missing .")
   if (is.null(modelnames)) {modelnames<-"model"
@@ -73,9 +74,15 @@ scidca.crr<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames
     data$prob1 = c(1- (summary(survfit(fit1, newdata=data), times=timepo1)$surv))
   }
   if (!is.null(newdata)) {
+    if (is.factor(newdata[,modely[2]])) {
+      newdata[,modely[2]]<-as.numeric(as.character(newdata[,modely[2]]))
+    }
     net<-cmprskstdca(data=newdata, outcome=modely[2], ttoutcome=modely[1], timepoint=timepo1, predictors="prob1", probability=FALSE,
                      graph=F,cmprsk=TRUE)
   } else {
+    if (is.factor(data[,modely[2]])) {
+      data[,modely[2]]<-as.numeric(as.character(data[,modely[2]]))
+    }
     net<-cmprskstdca(data=data, outcome=modely[2], ttoutcome=modely[1], timepoint=timepo1, predictors="prob1", probability=FALSE,
                      graph=F,cmprsk=TRUE)
   }
@@ -85,7 +92,7 @@ scidca.crr<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames
              threshold.text=threshold.text,threshold.line=threshold.line,nudge_x = nudge_x,nudge_y = nudge_y,
              threshold.linetype=threshold.linetype,threshold.linewidth = threshold.linewidth,threshold.linecol=threshold.linecol,
              po.text.size=po.text.size,po.text.col=po.text.col,po.text.fill=po.text.fill,liftpec=liftpec,rightpec=rightpec,
-             legend.position=legend.position)
+             legend.position=legend.position,lincol=lincol)
   p
 }
 

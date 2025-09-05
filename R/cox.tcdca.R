@@ -34,6 +34,7 @@
 #'@param rightpec Threshold point right displacement.
 #'@param legend.position Set the position of the legend.
 #'@param Splitface Name the faceted image.
+#'@param lincol Defines the drawing line color.
 #'
 #'
 #'
@@ -45,10 +46,6 @@
 #'
 #'@export
 
-utils::globalVariables(c(
-  'get_names'
-))
-
 
 
 cox.tcdca<-function(...,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
@@ -57,14 +54,14 @@ cox.tcdca<-function(...,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=
                     threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
                     threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
                     po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
-                    legend.position = c(0.85,0.75),Splitface=NULL) {
+                    legend.position = c(0.85,0.75),Splitface=NULL,lincol=NULL) {
   if (is.null(newdata)) {stop("Newdata cannot be missing.")}
   if (!is.list(newdata)) {stop("Newdata must be a list.")}
   fit.list<-list(...)
   fn<-length(fit.list);dn<-length(newdata)
   if (fn != dn) {stop("The number of models must be equal to the number of data.")}
   if (is.null(modelnames)) {
-    modelnames=get_names(...)
+    modelnames=as.character(eval(substitute(alist(...))))
   } else {modelnames<-modelnames}
   mn<-length(modelnames)
   if (fn != mn) {stop("The number of models and the number of model names must be equal.")}
@@ -111,6 +108,25 @@ cox.tcdca<-function(...,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=
             legend.title=element_blank(),
             legend.position= legend.position
       )
+    if (!is.null(lincol)) {
+      p<-ggplot2::ggplot(plotdat) +
+        geom_line(aes(x = threshold, y = value, color = variable), linewidth = 1.2) +
+        coord_cartesian(xlim = c(0, x.max), ylim = c(-y.min, y.max)) +
+        labs(x = "Threshold probability (%)", y = "Net benefit") +
+        # 替换scale_color_discrete为scale_color_manual以自定义颜色
+        scale_color_manual(
+          name = "Model",
+          labels = c(modelnames, "all", "none"),
+          values = lincol  # 自定义颜色
+        ) +
+        theme_bw(base_size = 14) +
+        theme(
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          legend.title = element_blank(),
+          legend.position = legend.position
+        )
+    }
   }
   if (length(timepoint)>1) {
     if (fn != length(timepoint)) {stop("The number of models must be equal to the number of times.")}
@@ -154,6 +170,25 @@ cox.tcdca<-function(...,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=
             legend.title=element_blank(),
             strip.background = element_rect(fill = "white")#分面背景
       )
+    if (!is.null(lincol)) {
+      p<-ggplot2::ggplot(plotdat) +
+        geom_line(aes(x = threshold, y = value, color = variable), linewidth = 1.2) +
+        coord_cartesian(xlim = c(0, x.max), ylim = c(-y.min, y.max)) +
+        labs(x = "Threshold probability (%)", y = "Net benefit") +
+        # 替换scale_color_discrete为scale_color_manual以自定义颜色
+        scale_color_manual(
+          name = "Model",
+          labels = c(modelnames, "all", "none"),
+          values = lincol  # 自定义颜色
+        ) +
+        theme_bw(base_size = 14) +
+        theme(
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          legend.title = element_blank(),
+          legend.position = legend.position
+        )
+    }
   }
   p
 }

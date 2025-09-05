@@ -30,7 +30,7 @@ getplot<-function(data,pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nom
                   colbar=TRUE,merge=FALSE,threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
                   threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
                   po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
-                  legend.position = c(0.85,0.75)) {
+                  legend.position = c(0.85,0.75),lincol=NULL) {
   dt<-data
   nbdat<-dt$net.benefit
   names(nbdat)<-c("threshold","all","none","net.benefit")
@@ -89,16 +89,21 @@ getplot<-function(data,pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nom
   y1.text<-(p.max-pyh)/2+pyh
   x2.text<-(x.max-t2)/2+t2
   y2.text<-(p.max-pyh)/2+pyh
-  p3<-ggplot(plotdat)+
-    geom_line(aes(x=threshold,y=value,color=variable),linewidth=1.2)+
-    coord_cartesian(xlim=c(0,x.max), ylim=c(-y.min,y.max))+
-    labs(x="Threshold probability (%)")+labs(y="Net benefit")+
-    scale_color_discrete(name="Model",labels=c(modelnames,"all","none"))+
-    theme_bw(base_size = 14)+
-    theme(panel.grid.major=element_blank(),
-          panel.grid.minor=element_blank(),
-          legend.title=element_blank(),
-          legend.position = legend.position
+  p3<-ggplot(plotdat) +
+    geom_line(aes(x = threshold, y = value, color = variable), linewidth = 1.2) +
+    coord_cartesian(xlim = c(0, x.max), ylim = c(-y.min, y.max)) +
+    labs(x = "Threshold probability (%)", y = "Net benefit") +
+    scale_color_manual(
+      name = "Model",
+      labels = c(modelnames, "all", "none"),
+      values = lincol
+    ) +
+    theme_bw(base_size = 14) +
+    theme(
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      legend.title = element_blank(),
+      legend.position = legend.position
     )
   ###############
   rect_df1 <- data.frame(xmin = 0,

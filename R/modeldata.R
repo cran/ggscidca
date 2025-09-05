@@ -29,6 +29,9 @@ modeldata<-function(fit,newdata=NULL,crrmol=FALSE){
     fit2$model=fit2$model[,-1]
     data<-fit2$model
   }
+  if ('scixgboot' %in% class(fit)) {
+    data<-fit[["data"]]
+  }
   data
 }
 
@@ -48,6 +51,9 @@ model.y<-function(fit){
   if ('svm' %in% class(fit)){
     modely<-all.vars(fit$terms)[c(1)]
   }
+  if ('scixgboot' %in% class(fit)) {
+    modely<-fit[["y"]]
+  }
   modely
 }
 model.x<-function(fit){
@@ -65,6 +71,9 @@ model.x<-function(fit){
   }
   if ('svm' %in% class(fit)){
     modelx<-all.vars(fit$terms)[-c(1)]
+  }
+  if ('scixgboot' %in% class(fit)) {
+    modelx<-fit[["x"]]
   }
   modelx
 }

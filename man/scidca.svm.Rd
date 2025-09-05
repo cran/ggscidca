@@ -34,7 +34,8 @@
   po.text.fill = "white",
   liftpec = NULL,
   rightpec = NULL,
-  legend.position = c(0.85, 0.75)
+  legend.position = c(0.85, 0.75),
+  lincol = c("#377EB8", "#4DAF4A", "#FF7F00")
 )
 }
 \arguments{
@@ -97,6 +98,8 @@
 \item{rightpec}{Threshold point right displacement.}
 
 \item{legend.position}{Set the position of the legend.}
+
+\item{lincol}{Defines the drawing line color.}
 }
 \value{
 A picture.

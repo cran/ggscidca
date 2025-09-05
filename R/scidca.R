@@ -38,7 +38,7 @@
 #'@param liftpec Threshold point left displacement.
 #'@param rightpec Threshold point right displacement.
 #'@param legend.position Set the position of the legend.
-#'
+#'@param lincol Defines the drawing line color.
 #'
 #'@import "ggplot2"
 #'@import "reshape2"
@@ -63,25 +63,6 @@
 #'##Draw decision curve
 #'scidca(f1)
 #'scidca(f1,threshold.line = TRUE,threshold.text = TRUE)
-#'##logistic regression model
-#'fit<-glm(status~er+histgrad+pr+age+ln_yesno,family = binomial(link = "logit"),data=bc)
-#'##Draw decision curve
-#'scidca(f1)
-#'scidca(f1,threshold.line = TRUE,threshold.text = TRUE)
-#'##random forest model
-#'library(randomForest)
-#'LIRI<-LIRI
-#'set.seed(1)
-#'index <- sample(2,nrow(LIRI),replace = TRUE,prob=c(0.7,0.3))
-#'traindata <- LIRI[index==1,]
-#'testdata <- LIRI[index==2,]
-#'traindata$status<-as.factor(traindata$status)
-#'#Modelling random forests
-#'fit<-randomForest(status ~ANLN+CENPA+GPR182+BCO2 ,data=traindata,ntree=500,
-#'important=TRUE,proximity=TRUE)
-#'scidca(fit,newdata = traindata)
-#'scidca(fit,newdata = testdata )
-#'scidca(fit,newdata = testdata ,threshold.line = TRUE,threshold.text = TRUE)
 
 
 
@@ -92,7 +73,7 @@ scidca <- function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=N
                    threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
                    threshold.linetype=2,threshold.linewidth = 1.2,threshold.linecol="black",
                    po.text.size=4,po.text.col="black",po.text.fill="white",liftpec=NULL,rightpec=NULL,
-                   legend.position = c(0.85,0.75)) {
+                   legend.position = c(0.85,0.75),lincol=c("#377EB8", "#4DAF4A", "#FF7F00")) {
   UseMethod('scidca')
 }
 

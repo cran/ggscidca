@@ -1,5 +1,5 @@
-#'@title  scidca.glm
-#'@name  scidca.glm
+#'@title  scidca.scixgboot
+#'@name  scidca.scixgboot
 #'
 #'@param fit Fill in the model you want to analyze. Support survival analysis and logistic regression.
 #'@param newdata If the decision curve of the validation set is to be analysed. Fill in the validation set data here.
@@ -33,9 +33,9 @@
 #'@param legend.position Set the position of the legend.
 #'@param lincol Defines the drawing line color.
 #'@importFrom "stats" "predict"
-#'
-#'
-#'
+#'@importFrom "stats" "model.matrix"
+#'@importFrom "xgboost" "xgb.DMatrix"
+#'@import "xgboost"
 #'@export
 #'
 #'@return A picture.
@@ -46,7 +46,7 @@
 
 
 
-scidca.glm<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
+scidca.scixgboot<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
                      pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nomogram relevant",
                      irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE,
                      threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
@@ -59,31 +59,26 @@ scidca.glm<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames
   } else {
     modelnames<-modelnames
   }
-  all.var<-all.vars(fit$terms)
-  modely<-model.y(fit)
+  yvname<-modely<-model.y(fit)
   modelx<-model.x(fit)
-  data<-fit[["data"]]
+  call1<-fit[["call1"]]
+  fitxgboot<-fit[["fit"]]
   if (!is.null(newdata)) {
     newdata<-newdata
+  } else {newdata<-fit[["data"]]}
+  ###
+  x = model.matrix(as.formula(call1),data=newdata)[,-1]
+  if (is.factor(newdata[,yvname])) {
+    ylabel <-as.numeric(as.character(newdata[,yvname]))
+  } else {ylabel<-as.numeric(newdata[,yvname])}
+  data_DMatrix<-xgboost::xgb.DMatrix(x , label =ylabel)
+  newdata$prob1 = stats::predict(fitxgboot,newdata = data_DMatrix)
+  ####
+  if (is.factor(newdata[,modely[1]])) {
+    newdata[,modely[1]]<-as.numeric(as.character(newdata[,modely[1]]))
   }
-  if (!is.null(newdata)) {
-    newdata$prob1 <- stats::predict(fit,newdata=newdata,type="response")
-  } else {
-    data$prob1<-stats::predict(fit,newdata=data,type="response")
-  }
-  if (!is.null(newdata)) {
-    if (is.factor(newdata[,modely[1]])) {
-      newdata[,modely[1]]<-as.numeric(as.character(newdata[,modely[1]]))
-    }
-    net<-dca(data = newdata, outcome = modely[1], predictors = c("prob1"),xstart = 0,
-             xstop = 1,graph=F)
-  } else {
-    if (is.factor(data[,modely[1]])) {
-      data[,modely[1]]<-as.numeric(as.character(data[,modely[1]]))
-    }
-    net<-dca(data = data, outcome = modely[1], predictors = c("prob1"),xstart = 0,
-             xstop = 1,graph=F)
-  }
+  net<-dca(data = newdata, outcome = modely[1], predictors = c("prob1"),xstart = 0,
+           xstop = 1,graph=F)
   ########
   p<-getplot(net,pyh,relcol=relcol,irrelcol=irrelcol,relabel=relabel,merge=merge,modelnames=modelnames,y.min=y.min,xstop=xstop,y.max=y.max,
              irrellabel=irrellabel,text.size=text.size,text.col=text.col,colbar=colbar,threshold.text=threshold.text,threshold.line=threshold.line,nudge_x = nudge_x,nudge_y = nudge_y,
