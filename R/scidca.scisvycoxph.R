@@ -1,5 +1,5 @@
-#'@title  scidca.coxph
-#'@name  scidca.coxph
+#'@title  scidca.scisvycoxph
+#'@name  scidca.scisvycoxph
 #'
 #'@param fit Fill in the model you want to analyze. Support survival analysis and logistic regression.
 #'@param newdata If the decision curve of the validation set is to be analysed. Fill in the validation set data here.
@@ -44,7 +44,7 @@
 
 
 
-scidca.coxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
+scidca.scisvycoxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnames=NULL,merge=FALSE,y.min=NULL,xstop=NULL,y.max=NULL,
                        pyh=NULL,relcol="#c01e35",irrelcol="#0151a2",relabel="Nomogram relevant",
                        irrellabel="Nomogram irrelevant",text.size=4.5,text.col="green",colbar=TRUE,
                        threshold.text=FALSE,threshold.line=FALSE,nudge_x = 0,nudge_y = 0,
@@ -58,20 +58,16 @@ scidca.coxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnam
     modelnames<-modelnames
   }
   all.var<-all.vars(fit$terms)
-  modely<-model.y(fit)
-  modelx<-model.x(fit)
-  data<-modeldata(fit)
+  modely<-fit[["yv"]]
+  timevar<-fit[["timevar"]]
+  data<-fit[["data"]]
   if (timepoint=='median') {
     timepo1<-stats::median(data[,modely[1]])
   } else {timepo1<-timepoint}
   if (!is.null(newdata)) {
     newdata<-newdata
   }
-  if (!is.null(newdata)) {
-    newdata$prob1 <- c(1-(summary(survfit(fit, newdata=newdata), times=timepo1)$surv))
-  } else {
-    data$prob1 = c(1- (summary(survfit(fit, newdata=data), times=timepo1)$surv))
-  }
+  data$prob1<-fit[["prob1"]]
   if (!is.null(newdata)) {
     if (is.factor(newdata[,modely[2]])) {
       newdata[,modely[2]]<-as.numeric(as.character(newdata[,modely[2]]))
@@ -94,4 +90,3 @@ scidca.coxph<-function(fit,newdata=NULL,timepoint='median',cmprsk=FALSE,modelnam
              legend.position,lincol=lincol)
   p
 }
-

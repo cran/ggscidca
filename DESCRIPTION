@@ -1,7 +1,7 @@
 Package: ggscidca
 Type: Package
 Title: Plotting Decision Curve Analysis with Coloured Bars
-Version: 0.2.5
+Version: 0.2.6
 Authors@R: person("Qiang", "Liu", email = "dege857@163.com",
                   role = c("aut", "cre"))
 Maintainer: Qiang Liu <dege857@163.com>
@@ -14,7 +14,7 @@ Imports: cmprsk, e1071, ggplot2, kernlab, randomForest, reshape2,
 Depends: R (>= 2.10)
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2025-09-05 02:34:52 UTC; liu
+Packaged: 2025-10-22 04:06:47 UTC; liu
 Author: Qiang Liu [aut, cre]
 Repository: CRAN
-Date/Publication: 2025-09-05 16:40:25 UTC
+Date/Publication: 2025-10-22 04:20:03 UTC

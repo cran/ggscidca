@@ -1,5 +1,5 @@
-e062927fbb1acbdb953b80eeea128c54 *DESCRIPTION
-dcf72a5bdcd02b32d0116c9fc30c7860 *NAMESPACE
+f4937213a3469a013c424fb116137a60 *DESCRIPTION
+295396c3da344e4bc941de96a6737e77 *NAMESPACE
 d77e1d853cb533696b2f0bf6f27a671f *R/Breastcancer.R
 be594cc1baf788f2b97e62805d45587e *R/LIRI.R
 d96a08736a8cf7612f7d7028a2fcf97d *R/cmprskstdca.R
@@ -14,8 +14,9 @@ da419e7c9ce4f899619ce97168cd3572 *R/modeldata.R
 f4e22d1188cae05460354b1f9efe3dae *R/newcrr.R
 f228a4f6a59f303d1492fd93f4c56d24 *R/randomForest.R
 cd63faa5c6a8dd93d84ab605b1d1705f *R/scidca.R
-9ca4361be76b691ebe451291a29af66e *R/scidca.coxph.R
+74ea4568b8d848b7edc5cc5cf842988f *R/scidca.coxph.R
 68ba3ca54edcd42c5f380f4f0f2d4b41 *R/scidca.glm.R
+fe2582d2128e969240725fa378f7f3df *R/scidca.scisvycoxph.R
 4eb19b25daa426bb9abbbdefbfad6dbc *R/scidca.scixgboot.R
 83473239081098b7bd6f9357cbe610c1 *R/scidca.svm.R
 889bacc7b2a0ddaf2c5bd25735fccbbe *R/scidcacrr.R
@@ -48,6 +49,7 @@ eb982f5ea321b43364537d07877813bb *man/newcrr.Rd
 acd4cbcfd71cce8fa159428b572797fc *man/scidca.glm.Rd
 7544c09c9e3a079eab05416a6ecc71eb *man/scidca.ksvm.Rd
 15dc903c1844d45dc7862d1ec33f0c28 *man/scidca.randomForest.Rd
+ac88ce926dbec52c4521ed3a4ae6116e *man/scidca.scisvycoxph.Rd
 0a41ee9281789b4302c2b12c34b490d0 *man/scidca.scixgboot.Rd
 940f612c13d5425523e4ef9f7e58e1ce *man/scidca.svm.Rd
 727365562c13586856edffa3c24309ed *man/stdca.Rd
